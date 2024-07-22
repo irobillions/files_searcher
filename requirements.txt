@@ -1,0 +1,12 @@
+
+# Bibliothèque pour manipuler les fichiers Excel
+openpyxl==3.0.10
+
+# Bibliothèque pour manipuler la base de données SQLite (inclus par défaut avec Python)
+# sqlite3 - inclus par défaut avec Python
+
+# Bibliothèque pour la journalisation (inclus par défaut avec Python)
+# logging - inclus par défaut avec Python
+
+# Bibliothèque pour l'analyse et la manipulation des expressions régulières (inclus par défaut avec Python)
+# re - inclus par défaut avec Python
