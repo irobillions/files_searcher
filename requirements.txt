@@ -10,3 +10,6 @@ openpyxl==3.0.10
 
 # Bibliothèque pour l'analyse et la manipulation des expressions régulières (inclus par défaut avec Python)
 # re - inclus par défaut avec Python
+
+pytest~=8.3.2
+setuptools~=60.2.0
