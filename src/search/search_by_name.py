@@ -34,9 +34,9 @@ class SearchByName(SearchBase):
 
         for path in results_path:
 
-            type = "Repertoire" if os.path.isdir(path) else "Fichier"
+            file_type = "Repertoire" if os.path.isdir(path) else "Fichier"
 
-            file_infos = FileInfos(os.path.basename(path), path, type, "")
+            file_infos = FileInfos(os.path.basename(path), path, file_type, "")
             file_infos.summarize()
             results.append(file_infos.to_dict())
 
