@@ -1,6 +1,6 @@
 import os
 
-from search.search_by_name import SearchByName
+from search.search_by_type import SearchByType
 from utils.file_utils import *
 
 
@@ -12,9 +12,9 @@ class Main:
     def run(self):
         directories = get_directories()
         only_file = get_boolean_input("Uniquement des fichiers ? (oui/non): ")
-        filename_to_search = get_filename()
+        pattern_to_search = get_filename()
 
-        self.searcher = SearchByName(directories, filename_to_search)
+        self.searcher = SearchByType(pattern_to_search, directories)
         results = self.searcher.search()
 
         if only_file:
