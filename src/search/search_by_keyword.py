@@ -9,15 +9,13 @@ class SearchByKeywordStrategy(SearchStrategy):
 
 class SearchKeywordTxtStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
-
-        def search_process()
+        def search_process():
+            pass
 class SearchKeywordDocxStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
         results = []
         def search_process():
             pass
-
-
 
 class SearchKeywordXlsxStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
@@ -29,8 +27,19 @@ class SearchKeywordDocStrategy(SearchStrategy):
         def search_process():
             pass
 
-
 class SearchKeywordXlsStrategy(SearchStrategy):
+    def search(self, directories: list, search_target):
+        def search_process():
+            pass
+
+class SearchKeywordPdfStrategy(SearchStrategy):
+
+    def search(self, directories: list, search_target):
+        def search_process():
+            pass
+
+
+class SearchKeywordCsvStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
         def search_process():
             pass
