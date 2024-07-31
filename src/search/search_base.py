@@ -1,10 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class SearchBase(ABC):
-    def __init__(self, directories: list):
-        self.directories = directories
-
+class SearchStrategy(ABC):
     @abstractmethod
-    def search(self):
-        raise NotImplemented("subclass should implement this method")
+    def search(self, directories: list, search_target):
+        raise NotImplemented("SearchStrategy has not been implemented yet.")
