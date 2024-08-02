@@ -1,6 +1,6 @@
 
 # Bibliothèque pour manipuler les fichiers Excel
-openpyxl==3.0.10
+openpyxl>=3.0.10
 
 # Bibliothèque pour manipuler la base de données SQLite (inclus par défaut avec Python)
 # sqlite3 - inclus par défaut avec Python
@@ -11,5 +11,12 @@ openpyxl==3.0.10
 # Bibliothèque pour l'analyse et la manipulation des expressions régulières (inclus par défaut avec Python)
 # re - inclus par défaut avec Python
 
-pytest~=8.3.2
-setuptools~=60.2.0
+pytest>=8.3.2
+setuptools>=65.5.1
+docx>=0.2.4
+textract>=1.6.5
+xlrd>=1.2.0
+PyPDF2>=3.0.1
+pytesseract>=0.3.10
+pdf2image>=1.17.0
+pillow~=10.4.0
