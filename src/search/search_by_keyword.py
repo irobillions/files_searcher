@@ -1,3 +1,4 @@
+import os
 from abc import ABC
 
 from search_base import SearchStrategy
@@ -9,8 +10,11 @@ class SearchByKeywordStrategy(SearchStrategy):
 
 class SearchKeywordTxtStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
+        results_path = []
         def search_process():
             pass
+
+
 class SearchKeywordDocxStrategy(SearchStrategy):
     def search(self, directories: list, search_target):
         results = []
