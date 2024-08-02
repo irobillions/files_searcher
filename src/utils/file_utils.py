@@ -4,11 +4,12 @@ import docx
 import win32com.client
 import openpyxl
 import xlrd
-
+from pptx import Presentation
 import PyPDF2
 import pytesseract
 from pdf2image import convert_from_path
 import camelot
+import comtypes.client
 import io
 
 def get_filename()-> str:
@@ -149,9 +150,29 @@ def file_contain_keyword_xls(path, keyword):
         print(f"Erreur {e}")
     return False
 
-
 def file_contain_keyword_pptx(path, keyword):
-    pass
+    keyword = keyword.lower()
+
+    try:
+        presentation = Presentation(path)
+        for slide in presentation.slides:
+            for shape in slide.shapes:
+                if hasattr(shape, "text"):
+                    # Check text in normal shapes
+                    text = shape.text.lower()
+                    if keyword in text:
+                        return True
+
+                if shape.shape_type == 19:
+                    table = shape.table
+                    for row in table.rows:
+                        for cell in row.cells:
+                            cell_text = cell.text.lower()
+                            if keyword in cell_text:
+                                return True
+    except Exception as e:
+        print(f"Erreur {e}")
+    return False
 
 def file_contain_keyword_pdf(path, keyword):
     keyword = keyword.lower()
@@ -190,6 +211,51 @@ def file_contain_keyword_pdf(path, keyword):
         print(f"Erreur {e}")
     return False
 
+def file_contain_keyword_ppt(path, keyword):
+    keyword = keyword.lower()
+
+    try:
+        powerpoint = comtypes.client.CreateObject("PowerPoint.Application")
+        presentation = powerpoint.Presentations.Open(path, WithWindow=False)
+        for slide in presentation.Slides:
+            for shape in slide.Shapes:
+                if shape.HasTextFrame:
+                    text = shape.TextFrame.TextRange.Text.lower()
+                    if keyword in text:
+                        ##presentation.Close()
+                        ##powerpoint.Quit()
+                        return True
+
+                if shape.Type == 7:
+                    table = shape.Table
+                    for row in table.Rows:
+                        for cell in row.Cells:
+                            cell_text = cell.Shape.TextFrame.TextRange.Text.lower()
+                            if keyword in cell_text:
+                                ##presentation.Close()
+                                ##powerpoint.Quit()
+                                return True
+
+        ##presentation.Close()
+        ##powerpoint.Quit()
+    except Exception as e:
+        print(f"Erreur {e}")
+    return False
 
 def file_contain_keyword_visio(path, keyword):
-    pass
+    keyword = keyword.lower()
+
+    try:
+        visio = comtypes.client.CreateObject('Visio.Application')
+        doc = visio.Documents.Open(path)
+        for page in doc.Pages:
+            for shape in page.Shapes:
+                if shape.Text and keyword in shape.Text.lower():
+                    doc.Close()
+                    visio.Quit()
+                    return True
+        doc.Close()
+        visio.Quit()
+    except Exception as e:
+        print(f"Erreur {e}")
+    return False

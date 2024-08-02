@@ -31,8 +31,8 @@ if __name__ == "__main__":
     #
     # print(res)
 
-    path = "D:\Ecole Polytechnique de Montreal\Sessions\A2022\MTH1101\Documents généraux\Plan-cours- A22.pdf"
-    keyword = "MacLaurin"
-    print(file_contain_keyword_pdf(path, keyword))
+    path = "D:\Ecole Polytechnique de Montreal\Sessions\A2022\INF1040\Q2_Q3-Analyse et investigation du problème.ppt"
+    keyword = "l’essuie-glace"
+    print(file_contain_keyword_ppt(path, keyword))
 
 
