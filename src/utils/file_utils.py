@@ -5,7 +5,7 @@ import win32com.client
 import openpyxl
 import xlrd
 from pptx import Presentation
-import PyPDF2
+from PyPDF2 import PdfReader
 import pytesseract
 from pdf2image import convert_from_path
 import camelot
@@ -13,7 +13,7 @@ import comtypes.client
 import io
 
 def get_filename()-> str:
-    return input("Donnez le nom du fichier à chercher: ").strip()
+    return input("Donnez la cible de recherche: ").strip()
 
 
 def get_boolean_input(prompt):
@@ -84,7 +84,7 @@ def file_contains_keyword_docx(path, keyword):
 
     return False
 
-def file_contains_keywords_doc(path, keyword):
+def file_contain_keyword_doc(path, keyword):
     is_temp_file = (os.path.basename(path).startswith('~$') or '~$' in os.path.basename(path)
                     or '._' in os.path.basename(path))
     try:
@@ -152,13 +152,19 @@ def file_contain_keyword_xls(path, keyword):
 
 def file_contain_keyword_pptx(path, keyword):
     keyword = keyword.lower()
-
+    is_temp_file = (os.path.basename(path).startswith('~$') or '~$' in os.path.basename(path)
+                    or '._' in os.path.basename(path))
     try:
+        if is_temp_file:
+            return False
+        if not os.path.exists(path):
+            print(f"Erreur: Le fichier n'existe pas à l'emplacement spécifié : {path}")
+            return False
+
         presentation = Presentation(path)
         for slide in presentation.slides:
             for shape in slide.shapes:
                 if hasattr(shape, "text"):
-                    # Check text in normal shapes
                     text = shape.text.lower()
                     if keyword in text:
                         return True
@@ -181,9 +187,9 @@ def file_contain_keyword_pdf(path, keyword):
     try:
         if is_temp_file:
             return False
-        # text content
+            # text content
         with open(path, 'rb') as file:
-            reader = PyPDF2.PdfReader(file)
+            reader = PdfReader(file)
             num_pages = len(reader.pages)
             for page_num in range(num_pages):
                 page = reader.pages[page_num]
@@ -191,24 +197,23 @@ def file_contain_keyword_pdf(path, keyword):
                 if text and keyword in text.lower():
                     return True
 
-        #  images
-        pages = convert_from_path(path)
-        for page in pages:
-            text = pytesseract.image_to_string(page)
-            if text and keyword in text.lower():
-                return True
+            # #  images
+            # pages = convert_from_path(path)
+            # for page in pages:
+            #     text = pytesseract.image_to_string(page)
+            #     if text and keyword in text.lower():
+            #         return True
 
-        # tables
-        tables = camelot.read_pdf(path, pages='all')
-        for table in tables:
-            df = table.df  # Convert the table to a DataFrame
-            for row in df.iterrows():
-                if any(keyword in str(cell).lower() for cell in row[1]):
-                    return True
-
-
+            # tables
+            # tables = camelot.read_pdf(path, pages='all')
+            # for table in tables:
+            #     df = table.df  # Convert the table to a DataFrame
+            #     for row in df.iterrows():
+            #         if any(keyword in str(cell).lower() for cell in row[1]):
+            #             return True
     except Exception as e:
         print(f"Erreur {e}")
+
     return False
 
 def file_contain_keyword_ppt(path, keyword):
@@ -259,3 +264,23 @@ def file_contain_keyword_visio(path, keyword):
     except Exception as e:
         print(f"Erreur {e}")
     return False
+
+
+def process_excel_doc(ext, path, keyword):
+    if ext == 'xlsx':
+        return file_contain_keyword_xlsx(path, keyword)
+    elif ext == 'xls':
+        return file_contain_keyword_xls(path, keyword)
+
+def process_word_doc(ext , path, keyword):
+    if ext == 'docx':
+        return file_contains_keyword_docx(path, keyword)
+    elif ext == 'doc':
+        return file_contain_keyword_doc(path, keyword)
+def process_powerpoint_doc(ext , path, keyword):
+    if ext == 'pptx':
+        return file_contain_keyword_pptx(path, keyword)
+    elif ext == 'ppt':
+        return file_contain_keyword_ppt(path, keyword)
+
+
